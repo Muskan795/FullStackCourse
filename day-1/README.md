@@ -156,3 +156,55 @@ I understand the basic idea of:
 Browser → request → server → response → browser
 
 but I want to understand what happens internally between these steps.
+
+
+
+
+
+# Questions and Answers
+
+1. Why does `After asynchronous operation` print before the asynchronously read file content?
+
+JavaScript runs one piece of JavaScript code at a time, but Node.js can handle asynchronous operations without waiting for them to finish.
+
+When `fs.readFile()` starts reading `message.txt`, Node.js does not wait for the result. It continues to the next line and prints `After asynchronous operation`. When the file reading is completed, the callback function is called and the file content is printed.
+
+That is why the output order is:
+
+Before asynchronous operation  
+After asynchronous operation  
+File content
+
+2. What is the difference between a callback and a Promise?
+
+A callback function is used with asynchronous operations. Node.js starts the operation and, when it is completed, it calls the callback function and gives us the result.
+
+In the callback approach, we manually check the `err` value to handle errors.
+
+A Promise represents the future result of an asynchronous operation. It can either be successful or fail. We can use `async/await` with Promises to make the code easier to read and handle errors using `try...catch`.
+
+3. Why is `"utf8"` passed to `readFile()`?
+
+UTF-8 is a character encoding system that tells Node.js how to convert the bytes from the file into readable characters or text.
+
+Without `"utf8"`, `readFile()` returns the file content as a Buffer. With `"utf8"`, it returns the content as a string.
+
+4. Why can an HTTPS response arrive in chunks?
+
+An HTTPS response may not come as one complete piece, especially when the response is larger. The data can be received in smaller chunks, so we collect all the chunks using `data += chunk` and wait for the `end` event before using the complete response.
+
+5. Why must `JSON.stringify()` be used before returning a JavaScript object?
+
+`JSON.stringify()` is a method used to convert a JavaScript object into a JSON string. When we want to send the object as a response to the client, we need to convert it into JSON text first. That is why we use `JSON.stringify()` before returning the object.
+
+6. What is the difference between `req` and `res`?
+
+`req` stores the incoming HTTP request from the client, while `res` is used to send the response back from the server to the client.
+
+7. Why must `res.end()` be called?
+
+`res.end()` is used to send the response to the client and finish the response. It tells Node.js that there is no more data to send.
+
+8. What happens when another application is already using port `3000`?
+
+Port `3000` can be used by only one application at a time. If another application is already using port `3000`, Node.js cannot start my server on the same port and gives an `EADDRINUSE` error. I would need to stop the other application or use a different port.
