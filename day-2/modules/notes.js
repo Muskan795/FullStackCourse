@@ -29,7 +29,7 @@ async function createNote(note) {
   return note;
 }
 
-// Keep these for later
+
 async function updateNote(id, changes) {
   // Part 8
 }
