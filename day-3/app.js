@@ -26,7 +26,22 @@ await fs.writeFile("notes.txt",text);
 
 const data = await fs.readFile("notes.txt", "utf8");
 
-console.log(data);
+const lines = data.split("\n");
+const words = data.trim().split(/\s+/);
+
+const characters = data.length;
+
+
+
+
+
+//console.log(data);   this console just displays the stored text in data 
+
+console.log("Characters:", characters);  // this counts the  total number of characters
+
+console.log("Lines:", lines.length);
+console.log("Words:", words.length);
+
 rl.close();
 }
 
