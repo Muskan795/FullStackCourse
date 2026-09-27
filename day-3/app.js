@@ -1,5 +1,6 @@
 const readline = require("node:readline/promises");
 const fs = require("node:fs/promises");
+const { stringify } = require("node:querystring");
 
 
 const rl = readline.createInterface({
@@ -42,7 +43,46 @@ console.log("Characters:", characters);  // this counts the  total number of cha
 console.log("Lines:", lines.length);
 console.log("Words:", words.length);
 
-rl.close();
-}
 
+
+
+
+const input = await rl.question("Enter numbers separated by spaces: ");
+
+const digits = input.split(" ");
+
+const numbers = digits.map(Number);
+await fs.writeFile("numbers.txt", JSON.stringify(numbers));
+
+const num  = await fs.readFile("numbers.txt", "utf8");
+
+const numbersArray = JSON.parse(num);
+console.log("num:",numbersArray);
+
+
+const sum = numbersArray.reduce((total,number) => total + number,0)
+console.log("Sum:",sum);
+
+const avg = sum / numbersArray.length;
+console.log("Avg:",avg);
+
+const min = Math.min(...numbersArray);
+console.log("Minimum:", min)
+
+const max = Math.max(...numbersArray);
+console.log("Maximum:", max)
+
+
+
+
+
+
+
+
+
+
+ rl.close();
+
+
+}
 main();

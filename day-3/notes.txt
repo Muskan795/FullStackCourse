@@ -1,5 +1,5 @@
-hi i am muskan 
-I am Learning node js 
-hello
-split breaks a string into smaller pieces and puts those pieces into an array
-trim removes extra whitespace from the beginning and end of the string
+bdu
+dbeu
+ndie
+nei
+n\
