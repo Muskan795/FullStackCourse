@@ -32,18 +32,12 @@ const words = data.trim().split(/\s+/);
 
 const characters = data.length;
 
-
-
-
-
 //console.log(data);   this console just displays the stored text in data 
 
 console.log("Characters:", characters);  // this counts the  total number of characters
 
 console.log("Lines:", lines.length);
 console.log("Words:", words.length);
-
-
 
 
 
@@ -72,12 +66,20 @@ console.log("Minimum:", min)
 const max = Math.max(...numbersArray);
 console.log("Maximum:", max)
 
+const namesData = await fs.readFile("names.txt","utf8");
+console.log(namesData);
 
+const names = namesData.split("\n");
 
+const uniqueNames = new Set(names);
+console.log(uniqueNames);
 
+const uniqueNamesArray = [...uniqueNames];
+uniqueNamesArray.sort();
 
+console.log(uniqueNamesArray);
 
-
+await fs.writeFile("unique-names.txt",uniqueNamesArray.join("\n"),"utf8")
 
 
 
