@@ -102,6 +102,42 @@ for (const word of normalizedWords) {
 const wordArray = [...wordCount];
 console.log(wordArray);
 
+
+// question 6 
+
+
+const studentData = await fs.readFile("students.json", "utf8");
+console.log(studentData);
+
+const students = JSON.parse(studentData);
+console.log(students);
+
+const name = await rl.question("Enter student name: ");
+const marks = await rl.question("Enter student marks: ");
+
+const studentMarks = Number(marks);
+
+students[name] = studentMarks;
+await fs.writeFile("students.json",JSON.stringify(students, null, 2),"utf8");
+
+console.log(students);
+
+const updateName = await rl.question("Enter student name to update: ");
+const newMarks = await rl.question("Enter new marks: ");
+const updatedMarks = Number(newMarks);
+students[updateName] = updatedMarks;
+
+const searchName = await rl.question("Enter student name to search: ");
+
+
+await fs.writeFile(
+  "students.json",
+  JSON.stringify(students, null, 2),
+  "utf8"
+);
+
+console.log("Marks:", students[searchName]);
+
  rl.close();
 
 
