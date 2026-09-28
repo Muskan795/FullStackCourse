@@ -82,6 +82,25 @@ console.log(uniqueNamesArray);
 await fs.writeFile("unique-names.txt",uniqueNamesArray.join("\n"),"utf8")
 
 
+const wordsData = await fs.readFile("words.txt", "utf8");
+console.log(wordsData);
+
+const wordList = wordsData.trim().split(/\s+/);
+console.log(wordList);
+
+const normalizedWords = wordList.map((word) => word.toLowerCase());
+console.log(normalizedWords);
+
+const wordCount = new Map();
+for (const word of normalizedWords) {
+  if (wordCount.has(word)) {
+  wordCount.set(word, wordCount.get(word) + 1);
+} else {
+  wordCount.set(word, 1);
+}
+}
+const wordArray = [...wordCount];
+console.log(wordArray);
 
  rl.close();
 
