@@ -2,144 +2,170 @@ const readline = require("node:readline/promises");
 const fs = require("node:fs/promises");
 const { stringify } = require("node:querystring");
 
-
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
 async function main() {
-    
   const sentence1 = await rl.question("Enter sentence 1: ");
   const sentence2 = await rl.question("Enter sentence 2: ");
-const sentence3 = await rl.question("Enter sentence 3: ");
-const sentence4 = await rl.question("Enter sentence 4: ");
-const sentence5 = await rl.question("Enter sentence 5: ");
+  const sentence3 = await rl.question("Enter sentence 3: ");
+  const sentence4 = await rl.question("Enter sentence 4: ");
+  const sentence5 = await rl.question("Enter sentence 5: ");
 
-
-const text = `${sentence1}
+  const text = `${sentence1}
 ${sentence2}
 ${sentence3}
 ${sentence4}
 ${sentence5}`;
 
-await fs.writeFile("notes.txt",text);
+  await fs.writeFile("notes.txt", text);
 
-const data = await fs.readFile("notes.txt", "utf8");
+  const data = await fs.readFile("notes.txt", "utf8");
 
-const lines = data.split("\n");
-const words = data.trim().split(/\s+/);
+  const lines = data.split("\n");
+  const words = data.trim().split(/\s+/);
 
-const characters = data.length;
+  const characters = data.length;
 
-//console.log(data);   this console just displays the stored text in data 
+  //console.log(data);   this console just displays the stored text in data
 
-console.log("Characters:", characters);  // this counts the  total number of characters
+  console.log("Characters:", characters); // this counts the  total number of characters
 
-console.log("Lines:", lines.length);
-console.log("Words:", words.length);
+  console.log("Lines:", lines.length);
+  console.log("Words:", words.length);
 
+  const input = await rl.question("Enter numbers separated by spaces: ");
 
+  const digits = input.split(" ");
 
-const input = await rl.question("Enter numbers separated by spaces: ");
+  const numbers = digits.map(Number);
+  await fs.writeFile("numbers.txt", JSON.stringify(numbers));
 
-const digits = input.split(" ");
+  const num = await fs.readFile("numbers.txt", "utf8");
 
-const numbers = digits.map(Number);
-await fs.writeFile("numbers.txt", JSON.stringify(numbers));
+  const numbersArray = JSON.parse(num);
+  console.log("num:", numbersArray);
 
-const num  = await fs.readFile("numbers.txt", "utf8");
+  const sum = numbersArray.reduce((total, number) => total + number, 0);
+  console.log("Sum:", sum);
 
-const numbersArray = JSON.parse(num);
-console.log("num:",numbersArray);
+  const avg = sum / numbersArray.length;
+  console.log("Avg:", avg);
 
+  const min = Math.min(...numbersArray);
+  console.log("Minimum:", min);
 
-const sum = numbersArray.reduce((total,number) => total + number,0)
-console.log("Sum:",sum);
+  const max = Math.max(...numbersArray);
+  console.log("Maximum:", max);
 
-const avg = sum / numbersArray.length;
-console.log("Avg:",avg);
+  const namesData = await fs.readFile("names.txt", "utf8");
+  console.log(namesData);
 
-const min = Math.min(...numbersArray);
-console.log("Minimum:", min)
+  const names = namesData.split("\n");
 
-const max = Math.max(...numbersArray);
-console.log("Maximum:", max)
+  const uniqueNames = new Set(names);
+  console.log(uniqueNames);
 
-const namesData = await fs.readFile("names.txt","utf8");
-console.log(namesData);
+  const uniqueNamesArray = [...uniqueNames];
+  uniqueNamesArray.sort();
 
-const names = namesData.split("\n");
+  console.log(uniqueNamesArray);
 
-const uniqueNames = new Set(names);
-console.log(uniqueNames);
+  await fs.writeFile("unique-names.txt", uniqueNamesArray.join("\n"), "utf8");
 
-const uniqueNamesArray = [...uniqueNames];
-uniqueNamesArray.sort();
+  const wordsData = await fs.readFile("words.txt", "utf8");
+  console.log(wordsData);
 
-console.log(uniqueNamesArray);
+  const wordList = wordsData.trim().split(/\s+/);
+  console.log(wordList);
 
-await fs.writeFile("unique-names.txt",uniqueNamesArray.join("\n"),"utf8")
+  const normalizedWords = wordList.map((word) => word.toLowerCase());
+  console.log(normalizedWords);
 
+  const wordCount = new Map();
+  for (const word of normalizedWords) {
+    if (wordCount.has(word)) {
+      wordCount.set(word, wordCount.get(word) + 1);
+    } else {
+      wordCount.set(word, 1);
+    }
+  }
+  const wordArray = [...wordCount];
+  console.log(wordArray);
 
-const wordsData = await fs.readFile("words.txt", "utf8");
-console.log(wordsData);
+  // question 6
 
-const wordList = wordsData.trim().split(/\s+/);
-console.log(wordList);
+  const studentData = await fs.readFile("students.json", "utf8");
+  console.log(studentData);
 
-const normalizedWords = wordList.map((word) => word.toLowerCase());
-console.log(normalizedWords);
+  const students = JSON.parse(studentData);
+  console.log(students);
 
-const wordCount = new Map();
-for (const word of normalizedWords) {
-  if (wordCount.has(word)) {
-  wordCount.set(word, wordCount.get(word) + 1);
-} else {
-  wordCount.set(word, 1);
-}
-}
-const wordArray = [...wordCount];
-console.log(wordArray);
+  const name = await rl.question("Enter student name: ");
+  const marks = await rl.question("Enter student marks: ");
 
+  const studentMarks = Number(marks);
 
-// question 6 
+  students[name] = studentMarks;
+  await fs.writeFile(
+    "students.json",
+    JSON.stringify(students, null, 2),
+    "utf8",
+  );
 
+  console.log(students);
 
-const studentData = await fs.readFile("students.json", "utf8");
-console.log(studentData);
+  const updateName = await rl.question("Enter student name to update: ");
+  const newMarks = await rl.question("Enter new marks: ");
+  const updatedMarks = Number(newMarks);
+  students[updateName] = updatedMarks;
 
-const students = JSON.parse(studentData);
-console.log(students);
+  const searchName = await rl.question("Enter student name to search: ");
 
-const name = await rl.question("Enter student name: ");
-const marks = await rl.question("Enter student marks: ");
+  await fs.writeFile(
+    "students.json",
+    JSON.stringify(students, null, 2),
+    "utf8",
+  );
 
-const studentMarks = Number(marks);
+  console.log("Marks:", students[searchName]);
 
-students[name] = studentMarks;
-await fs.writeFile("students.json",JSON.stringify(students, null, 2),"utf8");
+  // question 7
 
-console.log(students);
+  const todoData = await fs.readFile("todos.json", "utf8");
+  let todos = JSON.parse(todoData);
 
-const updateName = await rl.question("Enter student name to update: ");
-const newMarks = await rl.question("Enter new marks: ");
-const updatedMarks = Number(newMarks);
-students[updateName] = updatedMarks;
+  const task = await rl.question("Enter a task: ");
 
-const searchName = await rl.question("Enter student name to search: ");
+  const newTask = {
+    task: task,
+    completed: false,
+  };
 
+  todos.push(newTask);
 
-await fs.writeFile(
-  "students.json",
-  JSON.stringify(students, null, 2),
-  "utf8"
-);
+  await fs.writeFile("todos.json", JSON.stringify(todos, null, 2), "utf8");
 
-console.log("Marks:", students[searchName]);
+  const taskToComplete = await rl.question("Enter task to complete: ");
+  const taskFound = todos.find((todo) => todo.task === taskToComplete);
+  if (taskFound) {
+    taskFound.completed = true;
+  }
 
- rl.close();
+  console.log(todos);
+  await fs.writeFile("todos.json", JSON.stringify(todos, null, 2), "utf8");
 
+  const taskToDelete = await rl.question("Enter task to delete: ");
+  const remainingTodos = todos.filter((todo) => todo.task !== taskToDelete);
 
+  console.log(remainingTodos);
+
+  todos = remainingTodos;
+
+  await fs.writeFile("todos.json", JSON.stringify(todos, null, 2), "utf8");
+  console.log("All Tasks:", todos);
+  rl.close();
 }
 main();
