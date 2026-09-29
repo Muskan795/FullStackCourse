@@ -166,6 +166,23 @@ ${sentence5}`;
 
   await fs.writeFile("todos.json", JSON.stringify(todos, null, 2), "utf8");
   console.log("All Tasks:", todos);
+
+  // question 8
+
+  const textLines = [];
+  while (true) {
+    const line = await rl.question("Enter a line: ");
+    if (line === "save") {
+      await fs.writeFile("undo.txt", textLines.join("\n"), "utf8");
+      break;
+    }
+    if (line === "undo") {
+      textLines.pop();
+    } else {
+      textLines.push(line);
+    }
+  }
+
   rl.close();
 }
 main();
